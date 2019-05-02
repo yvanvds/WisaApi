@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WisaApi", "WisaApi.csproj", "{41FC79AE-A749-416C-A137-C026AB4FAE1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WisaTest", "..\WisaTest\WisaTest.csproj", "{0B90AD37-8DC9-4AEE-A4F9-3C41248ED85A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{41FC79AE-A749-416C-A137-C026AB4FAE1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41FC79AE-A749-416C-A137-C026AB4FAE1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41FC79AE-A749-416C-A137-C026AB4FAE1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41FC79AE-A749-416C-A137-C026AB4FAE1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B90AD37-8DC9-4AEE-A4F9-3C41248ED85A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B90AD37-8DC9-4AEE-A4F9-3C41248ED85A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B90AD37-8DC9-4AEE-A4F9-3C41248ED85A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B90AD37-8DC9-4AEE-A4F9-3C41248ED85A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8692BF1D-3961-49AB-B138-E4B18F0B3393}
+	EndGlobalSection
+EndGlobal
