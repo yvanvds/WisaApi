@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AbstractAccountApi;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace WisaApi
 
             if (result.Length == 0)
             {
-                Connector.Log?.Add("Wisa ClassGroups: empty result", true);
+                Connector.Log?.AddError(Origin.Wisa, "ClassGroups: empty result");
                 return false;
             }
 
@@ -51,7 +52,7 @@ namespace WisaApi
                 string line = reader.ReadLine();
                 if (!line.Equals("KLAS,OMSCHRIJVING,ADMINGROEP,INSTELLINGSNUMMER"))
                 {
-                    Connector.Log?.Add("Wisa Error while getting Classgroups. Headers do not match.", true);
+                    Connector.Log?.AddError(Origin.Wisa, "Error while getting Classgroups. Headers do not match.");
                     return false;
                 }
 
@@ -66,13 +67,13 @@ namespace WisaApi
                     }
                     catch (Exception e)
                     {
-                        Connector.Log?.Add("Wisa Parse error (" + e.Message + ") on line " + line, true);
+                        Connector.Log?.AddError(Origin.Wisa, "Parse error (" + e.Message + ") on line " + line);
                         return false;
                     }
                 }
             }
 
-            Connector.Log?.Add("Wisa: Loading classgroups from " + school.Name + " succeeded.");
+            Connector.Log?.AddMessage(Origin.Wisa, "Loading classgroups from " + school.Name + " succeeded.");
             return true;
         }
     }

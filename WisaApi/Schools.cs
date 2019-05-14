@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AbstractAccountApi;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -48,7 +49,7 @@ namespace WisaApi
                 }
                 catch (Exception e)
                 {
-                    Connector.Log?.Add("Wisa: Invalid list of school ID's (" + e.Message + ")", true);
+                    Connector.Log?.AddError(Origin.Wisa, "Invalid list of school ID's (" + e.Message + ")");
                     return false;
                 }
             }
@@ -72,7 +73,7 @@ namespace WisaApi
 
             if (result.Length == 0)
             {
-                Connector.Log?.Add("Wisa Instellingen: empty result", true);
+                Connector.Log?.AddError(Origin.Wisa, "Instellingen: empty result");
                 return false;
             }
 
@@ -82,7 +83,7 @@ namespace WisaApi
                 // first line contains headers, make sure they are ok
                 if (!line.Equals("ID,NAME,DESCRIPTION"))
                 {
-                    Connector.Log?.Add("Wisa Error while getting schools. Headers do not match.", true);
+                    Connector.Log?.AddError(Origin.Wisa, "Error while getting schools. Headers do not match.");
                     return false;
                 }
 
@@ -106,7 +107,7 @@ namespace WisaApi
 
                 }
 
-                Connector.Log?.Add("Wisa: School import succeeded");
+                Connector.Log?.AddMessage(Origin.Wisa, "School import succeeded");
                 return true;
             }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AbstractAccountApi;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -26,7 +27,14 @@ namespace WisaApi
             credentials.Database = database;
 
             service = new WISA.WisaAPIServiceService();
-            service.Url = "http://" + url + ":" + port.ToString() + "/SOAP/";
+            try
+            {
+                service.Url = "http://" + url + ":" + port.ToString() + "/SOAP/";
+            } catch(Exception e)
+            {
+                Log?.AddError(Origin.Wisa, e.Message);
+            }
+            
         }
 
         static public async Task<string> PerformQuery(string name, WISA.TWISAAPIParamValue[] values)
@@ -40,7 +48,7 @@ namespace WisaApi
                 }
                 catch (Exception e)
                 {
-                    Log?.Add("Wisa Query: " + e.Message, true);
+                    Log?.AddError(Origin.Wisa, e.Message);
                     return String.Empty;
                 }
             });
@@ -65,6 +73,28 @@ namespace WisaApi
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+            }
+        }
+
+        static public async Task<bool> TestConnection()
+        {
+            try
+            {
+                string result = await Connector.PerformQuery("SMATestCon", null);
+                if (result.Length == 0)
+                {
+                    Connector.Log?.AddError(Origin.Wisa, "Test Connection should have at least one result");
+                    return false;
+                } else
+                {
+                    Connector.Log?.AddMessage(Origin.Wisa, "Connection Succeeded");
+                    return true;
+                }
+            }
+            catch(Exception e)
+            {
+                Log?.AddError(Origin.Wisa, e.Message);
+                return false;
             }
         }
     }

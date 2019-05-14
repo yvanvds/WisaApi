@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AbstractAccountApi;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace WisaApi
 
             if (result.Length == 0)
             {
-                Connector.Log?.Add("Wisa Staff: empty result", true);
+                Connector.Log?.AddError(Origin.Wisa,  "Staff: empty result");
                 return false;
             }
 
@@ -52,7 +53,7 @@ namespace WisaApi
                 string line = reader.ReadLine();
                 if (!line.Equals("CODE,FAMILIENAAM,VOORNAAM"))
                 {
-                    Connector.Log?.Add("Wisa Error while getting staff. Headers do not match.", true);
+                    Connector.Log?.AddError(Origin.Wisa, "Error while getting staff. Headers do not match.");
                     return false;
                 }
 
@@ -68,13 +69,13 @@ namespace WisaApi
                     }
                     catch (Exception e)
                     {
-                        Connector.Log?.Add("Wisa Parse error (" + e.Message + ") on line " + line, true);
+                        Connector.Log?.AddError(Origin.Wisa, "Parse error (" + e.Message + ") on line " + line);
                         return false;
                     }
                 }
             }
 
-            Connector.Log?.Add("Wisa: Loading " + count.ToString() + " staff members from " + school.Name + " succeeded.");
+            Connector.Log?.AddMessage(Origin.Wisa, "Loading " + count.ToString() + " staff members from " + school.Name + " succeeded.");
             return true;
         }
     }
