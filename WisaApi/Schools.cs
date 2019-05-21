@@ -1,6 +1,8 @@
 ﻿using AbstractAccountApi;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,8 +12,8 @@ namespace WisaApi
 {
     static public class Schools
     {
-        private static List<School> all = new List<School>();
-        public static List<School> All { get => all; }
+        private static ObservableCollection<School> all = new ObservableCollection<School>();
+        public static ObservableCollection<School> All { get => all; }
 
         public static School Get(int ID)
         {
@@ -109,6 +111,28 @@ namespace WisaApi
 
                 Connector.Log?.AddMessage(Origin.Wisa, "School import succeeded");
                 return true;
+            }
+        }
+
+        public static JObject ToJson()
+        {
+            JObject result = new JObject();
+            var schools = new JArray();
+            foreach(var school in All)
+            {
+                schools.Add(school.ToJson());
+            }
+            result["Schools"] = schools;
+            return result;
+        }
+
+        public static void FromJson(JObject obj)
+        {
+            all.Clear();
+            var schools = obj["Schools"].ToArray();
+            foreach(var school in schools)
+            {
+                all.Add(new School(school as JObject));
             }
         }
     }

@@ -1,6 +1,8 @@
 ﻿using AbstractAccountApi;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,15 +12,20 @@ namespace WisaApi
 {
     public static class ClassGroups
     {
-        private static List<ClassGroup> all = new List<ClassGroup>();
-        public static List<ClassGroup> All { get => all; }
+        private static ObservableCollection<ClassGroup> all = new ObservableCollection<ClassGroup>();
+        public static ObservableCollection<ClassGroup> All { get => all; set => all = value; }
 
         public static void Clear()
         {
             all.Clear();
         }
 
-        public static async Task<bool> Add(School school, DateTime? workdate = null)
+        public static void Sort()
+        {
+            all = new ObservableCollection<ClassGroup>(all.OrderBy(i => i.Name));
+        }
+
+        public static async Task<bool> AddSchool(School school, DateTime? workdate = null)
         {
             List<WISA.TWISAAPIParamValue> values = new List<WISA.TWISAAPIParamValue>();
 
@@ -75,6 +82,28 @@ namespace WisaApi
 
             Connector.Log?.AddMessage(Origin.Wisa, "Loading classgroups from " + school.Name + " succeeded.");
             return true;
+        }
+
+        public static JObject ToJson()
+        {
+            JObject result = new JObject();
+            var groups = new JArray();
+            foreach(var group in All)
+            {
+                groups.Add(group.ToJson());
+            }
+            result["Groups"] = groups;
+            return result;
+        }
+
+        public static void FromJson(JObject obj)
+        {
+            all.Clear();
+            var groups = obj["Groups"].ToArray();
+            foreach (var group in groups)
+            {
+                all.Add(new ClassGroup(group as JObject));
+            }
         }
     }
 }

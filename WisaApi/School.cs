@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,5 +24,23 @@ namespace WisaApi
         public string Description { get => description; }
 
         public bool IsActive { get; set; } = false;
+
+        public JObject ToJson()
+        {
+            JObject result = new JObject();
+            result["ID"] = ID;
+            result["Name"] = Name;
+            result["Description"] = Description;
+            result["IsActive"] = IsActive;
+            return result;
+        }
+
+        public School(JObject obj)
+        {
+            id = Convert.ToInt32(obj["ID"]);
+            name = obj["Name"].ToString();
+            description = obj["Description"].ToString();
+            IsActive = Convert.ToBoolean(obj["IsActive"]);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,5 +35,25 @@ namespace WisaApi
         public string SchoolCode { get => schoolCode; }
 
         public int SchoolID { get; }
+
+        public JObject ToJson()
+        {
+            JObject result = new JObject();
+            result["Name"] = Name;
+            result["Description"] = Description;
+            result["AdminCode"] = AdminCode;
+            result["SchoolCode"] = SchoolCode;
+            result["SchoolID"] = SchoolID;
+            return result;
+        }
+
+        public ClassGroup(JObject obj)
+        {
+            name = obj["Name"].ToString();
+            description = obj["Description"].ToString();
+            adminCode = obj["AdminCode"].ToString();
+            schoolCode = obj["SchoolCode"].ToString();
+            SchoolID = Convert.ToInt32(obj["SchoolID"]);
+        }
     }
 }

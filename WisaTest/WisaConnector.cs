@@ -116,7 +116,7 @@ namespace WisaTest
             );
 
             WisaApi.ClassGroups.Clear();
-            bool result = await WisaApi.ClassGroups.Add(school);
+            bool result = await WisaApi.ClassGroups.AddSchool(school);
             Assert.IsTrue(result);
             Assert.IsTrue(WisaApi.ClassGroups.All.Count > 0);
 
