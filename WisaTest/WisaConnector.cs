@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using AbstractAccountApi;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WisaTest
 {
-    class Log : WisaApi.ILog
+    class Log : ILog
     {
-        public void Add(string message, bool error = false)
+        public void AddError(Origin origin, string message)
         {
-            string output = error ? "Error: " : "Message: ";
-            output += message;
+            Debug.WriteLine("Error: " + message);
+        }
 
-            Debug.WriteLine(output);
+        public void AddMessage(Origin origin, string message)
+        {
+            Debug.WriteLine("Message: " + message);
         }
     }
 

@@ -1,6 +1,8 @@
 ﻿using AbstractAccountApi;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,8 +12,8 @@ namespace WisaApi
 {
     public static class Students
     {
-        private static List<Student> all = new List<Student>();
-        public static List<Student> All { get => all; }
+        private static ObservableCollection<Student> all = new ObservableCollection<Student>();
+        public static ObservableCollection<Student> All { get => all; }
 
         public static Student GetByWisaID(string wisaID)
         {
@@ -27,7 +29,12 @@ namespace WisaApi
             all.Clear();
         }
 
-        public static async Task<bool> Add(School school, DateTime? workdate = null)
+        public static void Sort()
+        {
+            all = new ObservableCollection<Student>(all.OrderBy(i => i.Name));
+        }
+
+        public static async Task<bool> AddSchool(School school, DateTime? workdate = null)
         {
             List<WISA.TWISAAPIParamValue> values = new List<WISA.TWISAAPIParamValue>();
 
@@ -48,7 +55,7 @@ namespace WisaApi
             }
             values.Last().Value = date.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo(String.Empty, false));
 
-            string result = await Connector.PerformQuery("SyncLln", values.ToArray());
+            string result = await Connector.PerformQuery("SmaSyncLln", values.ToArray());
 
             if (result.Length == 0)
             {
@@ -87,6 +94,28 @@ namespace WisaApi
 
             Connector.Log?.AddMessage(Origin.Wisa, "Loading " + count.ToString() + "students from " + school.Name + " succeeded.");
             return true;
+        }
+
+        public static JObject ToJson()
+        {
+            JObject result = new JObject();
+            var accounts = new JArray();
+            foreach(var account in All)
+            {
+                accounts.Add(account.ToJson());
+            }
+            result["Accounts"] = accounts;
+            return result;
+        }
+
+        public static void FromJson(JObject obj)
+        {
+            all.Clear();
+            var accounts = obj["Accounts"].ToArray();
+            foreach (var account in accounts)
+            {
+                all.Add(new Student(account as JObject));
+            }
         }
     }
 }

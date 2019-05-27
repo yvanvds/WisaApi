@@ -39,7 +39,7 @@ namespace WisaApi
             }
             values.Last().Value = date.ToString("dd/MM/yyyy", new System.Globalization.CultureInfo(String.Empty, false));
 
-            string result = await Connector.PerformQuery("SyncPers", values.ToArray());
+            string result = await Connector.PerformQuery("SmaSyncPer", values.ToArray());
 
             if (result.Length == 0)
             {
