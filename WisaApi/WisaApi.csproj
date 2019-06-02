@@ -57,6 +57,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Rules\ReplaceInstitute.cs" />
     <Compile Include="Rules\Rules.cs" />
     <Compile Include="School.cs" />
     <Compile Include="Schools.cs" />

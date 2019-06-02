@@ -105,6 +105,25 @@ namespace WisaApi
                 all.Add(new ClassGroup(group as JObject));
             }
         }
+
+        public static void ApplyImportRules(List<IRule> rules)
+        {
+            for(int group = all.Count - 1; group >= 0; group--)
+            {
+                for(int i = 0; i < rules.Count; i++)
+                {
+                    if(rules[i].ShouldApply(all[group]))
+                    {
+                        if (rules[i].RuleAction == RuleAction.Modify) rules[i].Modify(all[group]);
+                        else if (rules[i].RuleAction == RuleAction.Discard)
+                        {
+                            all.RemoveAt(group);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

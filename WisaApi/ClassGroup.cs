@@ -32,9 +32,18 @@ namespace WisaApi
         public string Name { get => name; }
         public string Description { get => description; }
         public string AdminCode { get => adminCode; }
-        public string SchoolCode { get => schoolCode; }
+        public string SchoolCode { get => schoolCode; set => schoolCode = value; }
 
         public int SchoolID { get; }
+
+        public bool ContainsStudents()
+        {
+            foreach(var student in Students.All)
+            {
+                if (student.ClassGroup == Name) return true;
+            }
+            return false;
+        }
 
         public JObject ToJson()
         {
