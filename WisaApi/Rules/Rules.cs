@@ -12,6 +12,7 @@ namespace WisaApi.Rules
         public static Dictionary<Rule, string> ImportRules = new Dictionary<Rule, string>()
         {
             { Rule.WI_ReplaceInstitution, "Wijzig Instellingsnummer"},
+            { Rule.WI_DontImportClass, "Klas niet Importeren" },
         };
     }
 }
